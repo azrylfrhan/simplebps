@@ -1,0 +1,228 @@
+/* =============================================== */
+/* == PALET WARNA & VARIABEL GLOBAL             == */
+/* =============================================== */
+:root {
+    --primary-color: #0369a1;
+    --primary-color-dark: #023e58;
+    --primary-gradient: linear-gradient(135deg, #023e58 0%, #0369a1 100%);
+    --secondary-color: #1E293B;
+    --danger-color: #EF4444;
+    --warning-color: #F59E0B;
+    --success-color: #10B981;
+    --text-color: #334155;
+    --text-color-light: #64748B;
+    --background-color: #F7F8FC;
+    --surface-color: #FFFFFF;
+    --border-color: #E2E8F0;
+    --font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    --border-radius: 12px;
+    --sidebar-width: 260px;
+    --sidebar-width-collapsed: 80px;
+}
+
+/* =============================================== */
+/* == STYLING DASAR                             == */
+/* =============================================== */
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    margin: 0;
+    color: var(--text-color);
+    font-size: 16px;
+    transition: padding-left 0.3s ease;
+}
+
+/* =============================================== */
+/* == HALAMAN LOGIN                             == */
+/* =============================================== */
+.login-page-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: var(--primary-gradient);
+}
+.login-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    text-align: center;
+    width: 100%;
+    max-width: 380px;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.login-container img { width: 70px; margin-bottom: 15px; }
+.login-container h2 { margin-bottom: 20px; font-weight: 600; color: white; }
+.login-container .form-group { position: relative; margin-bottom: 20px; }
+.login-container .form-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.7); }
+.login-container .form-group input { width: 100%; padding: 14px 14px 14px 45px; border: none; border-radius: 10px; background: rgba(255, 255, 255, 0.2); color: #fff; outline: none; }
+.login-container .form-group input::placeholder { color: rgba(255, 255, 255, 0.7); }
+
+/* =============================================== */
+/* == LAYOUT UTAMA & SIDEBAR                     == */
+/* =============================================== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: var(--sidebar-width);
+    background: linear-gradient(180deg, var(--primary-color-dark), var(--primary-color));
+    color: white;
+    padding: 20px 0;
+    z-index: 1050; /* Di atas elemen konten */
+    box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    overflow-x: hidden !important; /* Paksa sembunyikan scroll horizontal */
+    overflow-y: visible;
+}
+.sidebar .brand {
+    font-size: 1.4rem; font-weight: 700; padding: 0 20px;
+    margin-bottom: 30px; display: flex; align-items: center; gap: 10px;
+    white-space: nowrap;
+}
+.sidebar .brand-icon { width: 32px; height: 32px; flex-shrink: 0; }
+.sidebar-nav { flex-grow: 1; overflow-y: auto; overflow-x: hidden !important; overflow-y: auto; }
+.sidebar-nav .nav-link {
+    display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.9);
+    padding: 12px 20px; text-decoration: none; font-weight: 500;
+    border-radius: 8px; margin: 6px 10px; transition: background 0.2s;
+    white-space: nowrap;
+}
+.sidebar-nav .nav-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
+.sidebar-nav .nav-link.active { background: rgba(255,255,255,0.25); color: #fff; font-weight: 600; }
+
+/* --- DROPDOWN SUB-MENU --- */
+.sidebar-nav .parent-menu .fa-chevron-down {
+    transition: transform 0.3s ease; font-size: 0.8em;
+    margin-left: auto;
+}
+.sidebar-nav .parent-menu[aria-expanded="true"] .fa-chevron-down {
+    transform: rotate(180deg);
+}
+.sidebar-nav .sub-menu {
+    padding-left: 35px !important;
+    font-size: 0.9rem;
+    background-color: rgba(0,0,0,0.2) !important;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.sidebar-nav .nav-link i.fa-fw {
+    width: 1.25em;
+    text-align: center;
+    display: inline-block;
+    flex-shrink: 0; /* Mencegah icon mengecil jika teks kepanjangan */
+}
+
+/* Mencegah pemotongan icon secara paksa */
+.sidebar-nav {
+    overflow-x: visible !important;
+}
+
+/* === FOOTER SIDEBAR (AREA TOMBOL TOGGLE) === */
+.sidebar-footer {
+    padding: 1rem;
+    margin-top: auto;
+    position: relative;
+    z-index: 1100;
+}
+.btn-toggle {
+    background-color: var(--primary-color-dark);
+    border: 2px solid white;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    right: -17px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    pointer-events: auto !important;
+}
+
+.badge-counter {
+    background-color: #ef4444; /* Merah terang */
+    color: white;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-left: auto; /* Agar mepet ke kanan */
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+    border: 1px solid white;
+}
+
+/* === MODE COLLAPSED === */
+body.sidebar-collapsed .sidebar { width: var(--sidebar-width-collapsed); }
+body.sidebar-collapsed .main-wrapper { margin-left: var(--sidebar-width-collapsed); }
+body.sidebar-collapsed .brand-text,
+body.sidebar-collapsed .nav-link-text,
+body.sidebar-collapsed .fa-chevron-down,
+body.sidebar-collapsed .brand-subtitle { display: none !important; }
+
+/* =============================================== */
+/* == CONTENT WRAPPER & HEADER                  == */
+/* =============================================== */
+.main-wrapper {
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    z-index: 1;
+}
+.top-header {
+    background: var(--surface-color);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+.main-content { padding: 30px; }
+
+/* =============================================== */
+/* == PRINT GAYA                                == */
+/* =============================================== */
+@media print {
+    .no-print, .sidebar, .top-header, .btn-toggle { display: none !important; }
+    .main-wrapper { margin-left: 0 !important; }
+}
+
+/* Menghilangkan titik bulat bawaan */
+    .container-surat ul {
+        list-style-type: none;
+        padding-left: 0 !important;
+        margin: 0;
+    }
+
+    /* Menambahkan tanda kurang (-) sebelum teks list */
+    .container-surat ul li {
+        position: relative;
+        padding-left: 15px; /* Memberi ruang untuk tanda kurang */
+        text-align: justify;
+        margin-bottom: 5px;
+    }
+
+    .container-surat ul li::before {
+        content: "-";
+        position: absolute;
+        left: 0;
+    }
+
+    .container-surat td {
+        vertical-align: top;
+    }
