@@ -24,6 +24,7 @@ class AkunController extends Controller
 
         User::create([
             'username' => $request->username,
+            'nama_lengkap' => $request->username,
             'password' => Hash::make('12345678'),
             'role' => $request->role,
             'tim_id' => $request->role === 'operator' ? $request->tim_id : null,

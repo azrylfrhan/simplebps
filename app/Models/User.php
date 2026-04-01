@@ -10,7 +10,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'username', 'password', 'role', 'tim_id', 'status', 'wajib_ganti_password'
+        'username', 'nama_lengkap', 'password', 'role', 'tim_id', 'status', 'wajib_ganti_password'
     ];
 
     // Helper untuk mengecek hak akses di Blade/Controller
