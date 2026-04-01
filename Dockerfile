@@ -52,8 +52,32 @@ COPY . .
 COPY --from=php_builder /app/vendor ./vendor
 COPY --from=node_builder /app/public/build ./public/build
 
-RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache
+# Create necessary directories with proper permissions
+RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache \
+    && mkdir -p storage/app/public \
+    && chmod -R 755 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+# Setup Laravel application
+RUN php artisan storage:link --force 2>/dev/null || true && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
+# Use init script for graceful startup
+COPY <<'EOF' /usr/local/bin/start-app
+#!/bin/sh
+set -e
+
+# Wait for database to be ready (optional, depends on Railway DB service)
+echo "Starting OEK Application..."
+
+# Run application
+exec php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+EOF
+
+RUN chmod +x /usr/local/bin/start-app
+
+CMD ["/usr/local/bin/start-app"]
