@@ -27,11 +27,13 @@ FROM node:20-alpine AS node_builder
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
+COPY vite.config.js ./
+COPY tailwind.config.js* ./
+COPY postcss.config.js* ./
 RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
 COPY resources ./resources
 COPY public ./public
-COPY vite.config.js ./
 RUN npm run build
 
 FROM php:8.3-cli
