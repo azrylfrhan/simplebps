@@ -60,12 +60,6 @@ RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framewor
     && chmod -R 755 storage bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
-# Setup Laravel application
-RUN php artisan storage:link --force 2>/dev/null || true && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
-
 EXPOSE 8080
 
 # Use init script for graceful startup
@@ -73,8 +67,16 @@ COPY <<'EOF' /usr/local/bin/start-app
 #!/bin/sh
 set -e
 
-# Wait for database to be ready (optional, depends on Railway DB service)
 echo "Starting OEK Application..."
+
+# Ensure public storage symlink exists.
+php artisan storage:link --force >/dev/null 2>&1 || true
+
+# Optional one-time setup during deploy.
+if [ "${RUN_DB_SETUP}" = "true" ]; then
+    php artisan migrate --force --no-interaction
+    php artisan db:seed --class=AdminSeeder --force --no-interaction
+fi
 
 # Run application
 exec php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
